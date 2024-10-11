@@ -1,36 +1,33 @@
-from collections import defaultdict, deque
+from collections import defaultdict
 
-def bfs(graph, start):
-    queue = deque([start])
-    visited = set([start])
-    direct_connections = set(graph[start])  # Store direct connections
+def bfs(graf, start):
+    kolejka = [start]
+    odwiedzone = [start]
+    bezpośrednie_połączenia = list(graf[start])
 
-    while queue:
-        node = queue.popleft()
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
+    while kolejka:
+        węzeł = kolejka.pop(0)
+        for sąsiad in graf[węzeł]:
+            if sąsiad not in odwiedzone:
+                odwiedzone.append(sąsiad)
+                kolejka.append(sąsiad)
 
-    return direct_connections
+    return bezpośrednie_połączenia
 
 def solve_koneksje():
-    # Read input
     s, k = map(int, input().split())
     
-    # Create graph
-    graph = defaultdict(set)
-    for _ in range(k):
+    graf = defaultdict(list)
+    for i in range(k):
         a, b = map(int, input().split())
-        graph[a].add(b)
-        graph[b].add(a)
+        graf[a].append(b)
+        graf[b].append(a)
     
-    # Process queries
     n = int(input())
-    for _ in range(n):
+    for i in range(n):
         s1, s2 = map(int, input().split())
-        direct_connections = bfs(graph, s1)
-        if s2 in direct_connections:
+        bezpośrednie_połączenia = bfs(graf, s1)
+        if s2 in bezpośrednie_połączenia:
             print("TAK")
         else:
             print("NIE")
