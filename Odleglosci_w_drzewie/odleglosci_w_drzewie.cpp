@@ -1,24 +1,23 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-
 using namespace std;
 
-vector<int> bfs(const vector<vector<int>>& graf, int start, int n)
+void bfs(const vector<vector<int>>& graf, int start, int n, vector<int>& odleglosci)
 {
     // -1 - nieodwiedzone
     // minimalna odl z wierzchołka start do innego
-    vector<int> odleglosci(n + 1, -1);
+    odleglosci.assign(n + 1, -1);
     queue<int> q;
-    
+   
     q.push(start);
     odleglosci[start] = 0;
-    
+   
     while (!q.empty())
     {
         int biezacy = q.front();
         q.pop();
-        
+       
         // dopóki kolejka nie jest pusta
         for (int sasiad : graf[biezacy])
         {
@@ -29,17 +28,14 @@ vector<int> bfs(const vector<vector<int>>& graf, int start, int n)
             }
         }
     }
-    
-    return odleglosci;
 }
 
 int main()
 {
     int n, start;
     cin >> n >> start;
-
     vector<vector<int>> graf(n + 1);
-    
+   
     for (int i = 0; i < n - 1; i++)
     {
         int a, b;
@@ -47,13 +43,14 @@ int main()
         graf[a].push_back(b);
         graf[b].push_back(a);
     }
-    
-    vector<int> odleglosci = bfs(graf, start, n);
-    
+   
+    vector<int> odleglosci;
+    bfs(graf, start, n, odleglosci);
+   
     for (int i = 1; i <= n; i++)
     {
         cout << odleglosci[i] << endl;
     }
-    
+   
     return 0;
 }

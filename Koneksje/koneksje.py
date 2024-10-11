@@ -1,34 +1,39 @@
-class Zadanie:
-    def __init__(self, sasiedzi):
-        self.koneksje = [[] for _ in range(sasiedzi + 1)]
+from collections import defaultdict, deque
 
-    def dodaj_koneksje(self, a, b):
-        self.koneksje[a].append(b)
-        self.koneksje[b].append(a)
+def bfs(graph, start):
+    queue = deque([start])
+    visited = set([start])
+    direct_connections = set(graph[start])  # Store direct connections
 
-    def sprawdz_koneksje(self, s1, s2):
-        return s2 in self.koneksje[s1]
+    while queue:
+        node = queue.popleft()
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
 
-def main():
-    sasiedzi, koneksje = map(int, input().split())
-    zadanie = Zadanie(sasiedzi)
+    return direct_connections
 
-    for _ in range(koneksje):
+def solve_koneksje():
+    # Read input
+    s, k = map(int, input().split())
+    
+    # Create graph
+    graph = defaultdict(set)
+    for _ in range(k):
         a, b = map(int, input().split())
-        zadanie.dodaj_koneksje(a, b)
-
-    zapytania = int(input())
-
-    odpowiedzi = []
-
-    for _ in range(zapytania):
+        graph[a].add(b)
+        graph[b].add(a)
+    
+    # Process queries
+    n = int(input())
+    for _ in range(n):
         s1, s2 = map(int, input().split())
-        if zadanie.sprawdz_koneksje(s1, s2):
-            odpowiedzi.append("TAK")
+        direct_connections = bfs(graph, s1)
+        if s2 in direct_connections:
+            print("TAK")
         else:
-            odpowiedzi.append("NIE")
-
-    print("\n".join(odpowiedzi))
+            print("NIE")
 
 if __name__ == "__main__":
-    main()
+    solve_koneksje()

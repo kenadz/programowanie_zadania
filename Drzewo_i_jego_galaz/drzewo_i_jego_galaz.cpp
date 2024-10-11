@@ -4,6 +4,7 @@
 using namespace std;
 
 vector<vector<int>> t;
+
 bool odw[32]; // odwiedzone wierzchołki
 
 int DFS(int v)
@@ -28,6 +29,16 @@ int main()
     cin >> w >> k;
     
     t.resize(w + 1);
+
+    // for (int i = 1; i <= w; i++)
+    // {
+    //     cout << "t[" << i << "] = ";
+    //     for (int j = 0; j < t[i].size(); j++)
+    //     {
+    //         cout << t[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     for (int i = 0; i < k; i++)
     {
